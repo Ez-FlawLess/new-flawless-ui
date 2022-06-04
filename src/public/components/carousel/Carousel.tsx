@@ -1,8 +1,8 @@
 import React from "react";
-import { FC, Key, ReactElement, RefObject, useEffect, useMemo, useRef, useState } from "react";
+import { FC, Key, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import useRefEvent from "../../hooks/useRefEvent";
-import useTimeout from "../../hooks/useTimeout";
+import useRefEvent from "../../../private/hooks/useRefEvent";
+import useTimeout from "../../../private/hooks/useTimeout";
 import { CarouselPropsI } from "./Carousel.types";
 
 const ContainerDiv = styled.div`
