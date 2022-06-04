@@ -1,7 +1,8 @@
 import { createContext } from "react";
-import { networkContextT } from "../types/network.types";
+import { networkContextI } from "../types/network.types";
 
-export const networkContext = createContext<networkContextT>([
-    {},
-    () => null,
-])
+export const networkContext = createContext<networkContextI>({
+    network: {},
+    setNetwork: () => null,
+    numberOfPendingRequests: 0,
+})

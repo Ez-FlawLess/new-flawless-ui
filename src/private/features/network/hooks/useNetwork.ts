@@ -1,11 +1,12 @@
 import { AxiosInstance } from "axios";
 import { useEffect, useState } from "react";
-import { NetworkI, networkContextT } from "../types/network.types";
+import { NetworkI, networkContextI } from "../types/network.types";
 import { extractUrl } from "../util/extractUrl";
 
-export const useNetwork = (axiosInstance: AxiosInstance): networkContextT => {
+export const useNetwork = (axiosInstance: AxiosInstance): networkContextI => {
 
     const [network, setNetwork] = useState<NetworkI>({})
+    const [numberOfPendingRequests, setNumberOfPendingRequests] = useState<number>(0)
 
     useEffect(() => {
 
@@ -18,6 +19,8 @@ export const useNetwork = (axiosInstance: AxiosInstance): networkContextT => {
                     ...prev,
                     [url]: true,
                 }))
+
+                setNumberOfPendingRequests(prev => prev + 1)
 
                 return config
             },
@@ -36,6 +39,8 @@ export const useNetwork = (axiosInstance: AxiosInstance): networkContextT => {
                     [url]: false,
                 }))
 
+                setNumberOfPendingRequests(prev => prev - 1)
+
                 return response
             },
             error => {
@@ -46,6 +51,8 @@ export const useNetwork = (axiosInstance: AxiosInstance): networkContextT => {
                     ...prev,
                     [url]: false,
                 }))
+
+                setNumberOfPendingRequests(prev => prev - 1)
 
                 throw error
             }
@@ -58,5 +65,5 @@ export const useNetwork = (axiosInstance: AxiosInstance): networkContextT => {
 
     }, [axiosInstance])
 
-    return [network, setNetwork]
+    return {network, setNetwork, numberOfPendingRequests}
 }

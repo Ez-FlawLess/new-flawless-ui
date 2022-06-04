@@ -9,4 +9,8 @@ export interface NetworkPropsI {
     axiosInstance: AxiosInstance,
 }
 
-export type networkContextT = [NetworkI, Dispatch<SetStateAction<NetworkI>>]
+export interface networkContextI  {
+    network: NetworkI, 
+    setNetwork: Dispatch<SetStateAction<NetworkI>>,
+    numberOfPendingRequests: number,
+}
