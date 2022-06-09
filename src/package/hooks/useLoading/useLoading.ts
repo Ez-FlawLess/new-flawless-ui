@@ -1,4 +1,4 @@
-import { networkContext } from "private/features/network/context/networkContext"
+import { networkContext } from "network/context/networkContext"
 import { useContext, useEffect, useState } from "react"
 
 export const useLoading = (url?: string): boolean => {

@@ -1,4 +1,4 @@
-import { useLoading } from "public/hooks";
+import { useLoading } from "package/hooks";
 import React from "react";
 import { FC } from "react";
 import { LoadingPropsI } from "./Loading.type";
