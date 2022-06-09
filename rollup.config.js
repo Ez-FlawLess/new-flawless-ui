@@ -29,7 +29,7 @@ export default [
             typescript({ tsconfig: "./tsconfig.json" }),
             terser(),
         ],
-        external: ["react", "react-dom", "styled-components", "axios"]
+        external: ["react", "react-dom", "axios"]
     },
     {
         input: "dist/esm/types/public/index.d.ts",
