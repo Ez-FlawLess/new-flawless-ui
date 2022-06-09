@@ -1,15 +1,8 @@
 import React, { Fragment, useMemo } from "react";
 import { ReactElement } from "react";
+import { ForPropsI } from "./For.types";
 
-type renderFunc<T> = (item: T, index?: number) => ReactElement | ReactElement[]
-type renderFuncWithInfo<T> = (item: T, index?: number, isFirst?: boolean, isLast?: boolean) => ReactElement | ReactElement[]
-
-export const For = <T,>(props: {
-    list: T[],
-    children: renderFuncWithInfo<T>,
-    firstItem?: renderFunc<T>,
-    lastItem?: renderFunc<T>,
-}): ReactElement | null => {
+export const For = <T,>(props: ForPropsI<T>): ReactElement | null => {
 
     const listLength: number = useMemo(() => props.list.length, [props.list])
 
