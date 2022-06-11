@@ -1,5 +1,5 @@
-import { AxiosInstance } from "axios";
+import { ConfigI } from "./config.types";
 
 export interface FlawLessUIPropsI {
-    axiosInstance: AxiosInstance,
+    config: ConfigI,
 }

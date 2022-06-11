@@ -1,5 +1,5 @@
-import { SwitchPropsI } from "conditional/types/Switch.types"
 import React, { ReactElement, ReactNode, useMemo } from "react"
+import { SwitchPropsI } from "../types/Switch.types"
 
 export const Switch = <T,>(props: SwitchPropsI<T>): ReactElement | null => {
 

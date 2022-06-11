@@ -1,6 +1,6 @@
-import { useLoading } from "package/hooks";
 import React from "react";
 import { FC } from "react";
+import { useLoading } from "../hooks/useLoading";
 import { LoadingPropsI } from "../types/Loading.type";
 
 export const Loading: FC<LoadingPropsI> = props => {

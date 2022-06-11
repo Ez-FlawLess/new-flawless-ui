@@ -1,5 +1,5 @@
-import { networkContext } from "network/context/networkContext"
 import { useContext, useEffect, useState } from "react"
+import { networkContext } from "../context/networkContext"
 
 export const useLoading = (url?: string): boolean => {
 
