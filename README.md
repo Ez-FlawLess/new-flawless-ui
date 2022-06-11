@@ -47,7 +47,7 @@ Has a variaty of ways to help you render an array with ease
 <For list={array}>
     {item => (
         {jsx}
-    })
+    )}
 </For>
 ```
 
@@ -57,7 +57,7 @@ If you have small changes in your jsx depending on the index or it being the fir
 <For list={array}>
     {(item, index, isFirst, isLast) => (
         {jsx}
-    })
+    )}
 </For>
 ```
 
@@ -71,6 +71,6 @@ If your jsx is completely for first or last item you can pass their function in 
 >
     {item => (
         {jsx}
-    })
+    )}
 </For>
 ```
