@@ -11,6 +11,7 @@ Group of components helping you in rendering components from lists or expression
 - [Show](#Show)
 - [IfElse](#IfElse)
 - [For](#For)
+- [Switch](#Switch)
 
 ### Show
 
@@ -73,4 +74,22 @@ If your jsx is completely for first or last item you can pass their function in 
         {jsx}
     )}
 </For>
+```
+
+### Switch
+
+Works just like a normal switch case
+
+```javascript
+<Switch expression={variable}>
+    <Case value={value1} break>
+        {jsx}
+    </Case>
+    <Case value={value2}>
+        {jsx}
+    </Case>
+    <Case default>
+        {jsx}
+    </Case>
+</Switch>
 ```
