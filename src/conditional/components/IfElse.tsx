@@ -1,6 +1,5 @@
-import { IfElsePropsI } from "conditional/types/IfElse.types";
-import React from "react";
-import { ReactElement, useMemo } from "react";
+import React, { ReactElement, useMemo } from "react";
+import { IfElsePropsI } from "../types/IfElse.types";
 
 export const IfElse = (props: IfElsePropsI): ReactElement | null => {
 
