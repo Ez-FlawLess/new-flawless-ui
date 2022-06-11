@@ -1,6 +1,6 @@
 import React, { Fragment, useMemo } from "react";
 import { ReactElement } from "react";
-import { ForPropsI } from "./For.types";
+import { ForPropsI } from "../types/For.types";
 
 export const For = <T,>(props: ForPropsI<T>): ReactElement | null => {
 

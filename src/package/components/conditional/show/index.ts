@@ -1,1 +1,1 @@
-export * from './Show'
+export * from '../../../../conditional/components/Show'
