@@ -1,1 +1,1 @@
-export * from '../../../network/components/Loading'
+export { Loading } from '../../../network/components/Loading'

@@ -1,1 +1,1 @@
-export * from '../../../../../conditional/components/Case'
+export { Case } from '../../../../../conditional/components/Case'

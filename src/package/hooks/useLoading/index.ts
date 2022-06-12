@@ -1,1 +1,1 @@
-export * from '../../../network/hooks/useLoading'
+export { useLoading } from '../../../network/hooks/useLoading'

@@ -1,1 +1,1 @@
-export * from '../../../../conditional/components/For'
+export { For } from '../../../../conditional/components/For'

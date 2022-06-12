@@ -10,6 +10,8 @@ export type ClientErrorStatusCodeT = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 4
 
 export type ServerErrorStatusCodeT = 500 | 501 | 502 | 503 | 504 | 505 | 511
 
+export type statusCodesT = InformationStatusCodeT | successfulStatusCodeT | RedirectionSatusCodeT | ClientErrorStatusCodeT | ServerErrorStatusCodeT
+
 export interface StatusCodeMessageT<T = string> {
     title?: string,
     message: T extends string ? string : T,

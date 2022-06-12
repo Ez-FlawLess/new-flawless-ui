@@ -1,1 +1,1 @@
-export * from '../../../../conditional/components/Show'
+export { Show } from '../../../../conditional/components/Show'

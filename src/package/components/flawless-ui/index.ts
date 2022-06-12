@@ -1,1 +1,1 @@
-export * from '../../../config/components/FlawLessUI'
+export { FlawLessUI } from '../../../config/components/FlawLessUI'

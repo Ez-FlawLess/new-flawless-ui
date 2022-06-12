@@ -1,2 +1,2 @@
 export * from './case'
-export * from '../../../../conditional/components/Switch'
+export { Switch } from '../../../../conditional/components/Switch'

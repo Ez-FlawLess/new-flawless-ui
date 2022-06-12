@@ -1,1 +1,1 @@
-export * from '../../../../conditional/components/IfElse'
+export { IfElse } from '../../../../conditional/components/IfElse'
