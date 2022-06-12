@@ -20,9 +20,9 @@ export interface StatusCodeMessageT<T = string> {
 export interface StatusCodeMessagesI {
     success?: StatusCodeMessageT,
     error?: StatusCodeMessageT<(data: any) => string | void>,
-    1: StatusCodeMessageT<Record<InformationStatusCodeT, string>>,
-    2: StatusCodeMessageT<Record<successfulStatusCodeT, string>>,
-    3: StatusCodeMessageT<Record<RedirectionSatusCodeT, string>>,
-    4: StatusCodeMessageT<Record<ClientErrorStatusCodeT, string>>,
-    5: StatusCodeMessageT<Record<ServerErrorStatusCodeT, string>>,
+    1: StatusCodeMessageT<string | Record<InformationStatusCodeT, string>>,
+    2: StatusCodeMessageT<string | Record<successfulStatusCodeT, string>>,
+    3: StatusCodeMessageT<string | Record<RedirectionSatusCodeT, string>>,
+    4: StatusCodeMessageT<string | Record<ClientErrorStatusCodeT, string>>,
+    5: StatusCodeMessageT<string | Record<ServerErrorStatusCodeT, string>>,
 }

@@ -1,9 +1,14 @@
 import { AxiosInstance } from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { configContext } from "../../config/context/config.context";
+import { HttpMethodT } from "../types/httpMethod.types";
 import { NetworkI, networkContextI } from "../types/network.types";
+import { statusCodesT } from "../types/statusCode.types";
 import { extractUrl } from "../util/extractUrl";
 
 export const useNetwork = (axiosInstance: AxiosInstance): networkContextI => {
+
+    const config = useContext(configContext)
 
     const [network, setNetwork] = useState<NetworkI>({})
     const [numberOfPendingRequests, setNumberOfPendingRequests] = useState<number>(0)
@@ -36,8 +41,16 @@ export const useNetwork = (axiosInstance: AxiosInstance): networkContextI => {
 
                 setNetwork(prev => ({
                     ...prev,
-                    [url]: false,
+                    [url]:  config.httpMethods?.includes(response.config.method as HttpMethodT)
+                        ? {
+                            success: true,
+                            statusCode: response.status as statusCodesT,
+                            response: response.data,
+                        }
+                        : false,
                 }))
+
+                
 
                 setNumberOfPendingRequests(prev => prev - 1)
 
@@ -49,7 +62,11 @@ export const useNetwork = (axiosInstance: AxiosInstance): networkContextI => {
 
                 setNetwork(prev => ({
                     ...prev,
-                    [url]: false,
+                    [url]: {
+                        success: false,
+                        statusCode: error.response.status,
+                        response: error.response.data,
+                    },
                 }))
 
                 setNumberOfPendingRequests(prev => prev - 1)
