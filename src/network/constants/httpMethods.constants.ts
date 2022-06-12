@@ -1,3 +1,3 @@
-import { HttpMethods } from "../types/httpMethod.types";
+import { HttpMethodsT } from "../types/httpMethod.types";
 
-export const DEFAULT_HTTP_METHODS: HttpMethods = ['post', 'put', 'patch', 'delete']
+export const DEFAULT_HTTP_METHODS: HttpMethodsT = ['post', 'put', 'patch', 'delete']

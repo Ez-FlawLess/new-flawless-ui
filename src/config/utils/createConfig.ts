@@ -1,12 +1,9 @@
-import { DEFAULT_HTTP_METHODS } from "../../network/constants/httpMethods.constants"
-import { STATUS_CODE_MESSAGES } from "../../network/constants/statusCodes.constants"
+import { CONFIG_DEFAULT } from "../constants/config.constants"
 import { ConfigI } from "../types/config.types"
 
 export const createConfig = (config: ConfigI): ConfigI => {
     return {
-        httpMethods: DEFAULT_HTTP_METHODS,
-        statusCodeMessages: STATUS_CODE_MESSAGES,
-        
+        ...CONFIG_DEFAULT,
         ...config,
     }
 }

@@ -17,9 +17,9 @@ export interface StatusCodeMessageT<T = string> {
     message: T extends string ? string : T,
 }
 
-export interface StatusCodeMessagesI<T = any> {
+export interface StatusCodeMessagesI {
     success?: StatusCodeMessageT,
-    error?: StatusCodeMessageT<(data: T) => string>,
+    error?: StatusCodeMessageT<(data: any) => string | void>,
     1: StatusCodeMessageT<Record<InformationStatusCodeT, string>>,
     2: StatusCodeMessageT<Record<successfulStatusCodeT, string>>,
     3: StatusCodeMessageT<Record<RedirectionSatusCodeT, string>>,
