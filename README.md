@@ -145,3 +145,49 @@ const config = createConfig({
     },
 })
 ```
+
+#### Components
+
+- [Loading](#Loading)
+
+#### Hooks
+
+- [useLoading](#useLoading)
+
+### Loading
+
+It handles loading for the given url
+
+```
+useEffect(() => {
+    getData()
+}, [])
+
+const getData = async () => {
+  await api.get('seed/picsum/200/300')
+}
+
+return (
+    <Loading url="seed/picsum/200/300">
+        {(loading: boolean) => (
+            <>
+              {loading ? 'loading' : 'done'}
+            </>
+         )}
+     </Loading>
+)
+```
+
+### useLoading
+
+If not given a url it will return true if any request is being made or if given a url only returns true for that url
+
+```javascript
+const loading = useLoading
+
+return (
+    <>
+        {loading ? 'loading' : 'done'}
+    </>
+)
+```
