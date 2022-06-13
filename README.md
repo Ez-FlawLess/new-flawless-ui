@@ -130,25 +130,10 @@ root.render(
 )
 ```
 
-After that you should create your Alert components and pass to the to the config file
-
-```javascript
-import { createConfig } from 'flawless-ui'
-
-const config = createConfig({
-    axiosInstance: instance,
-    components: {
-        alerts: {
-          success: (props: AlertI) => <div>S - {props.title} - {props.message}<button onClick={props.onClose}>close</button></div>,
-          error: (props: AlertI) => <div>E - {props.title} - {props.message}<button onClick={props.onClose}>close</button></div>,
-        },
-    },
-})
-```
-
 #### Components
 
 - [Loading](#Loading)
+- [HttpFeedback](#HttpFeedback)
 
 #### Hooks
 
@@ -177,6 +162,60 @@ return (
      </Loading>
 )
 ```
+
+### HttpFeedback
+
+First you should create your Alert components and pass to the to the config file
+
+```javascript
+import { createConfig } from 'flawless-ui'
+
+const config = createConfig({
+    ...restOfConfig,
+    components: {
+        alerts: {
+          success: (props: AlertI) => <div>S - {props.title} - {props.message}<button onClick={props.onClose}>close</button></div>,
+          error: (props: AlertI) => <div>E - {props.title} - {props.message}<button onClick={props.onClose}>close</button></div>,
+        },
+    },
+})
+```
+
+By default ```HttpFeedback``` handles error for all request but success for only post, put, patch and delete requests. You can change this how ever by passing an array of methods to the httpMethods of config
+
+```javascript
+import { createConfig, HTTP_METHODS } from 'flawless-ui'
+
+const config = createConfig({
+  ...restOfConfig,
+  httpMethods: [...HTTP_METHODS, 'get'],
+})
+```
+
+Then you can use it like this
+
+```javascript
+useEffect(() => {
+    getData()
+}, [])
+
+const getData = async () => {
+  await api.get('seed/picsum/200/300')
+}
+
+return (
+    <HttpFeedback 
+        url="seed/picsum/200/300"
+    />
+)
+```
+
+The message and title passed to the alert component come from 3 methods:
+- [onError and onSuccess props](#onError-and-onSuccess-props)
+- success and error key value pairs in config
+- status code message from config
+
+#### onError and onSuccess props
 
 ### useLoading
 
