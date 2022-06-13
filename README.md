@@ -1,6 +1,7 @@
 # Features
 
 - [Conditional](#Conditional)
+- [Network](#Network)
 
 ## Conditional
 
@@ -92,4 +93,55 @@ Works just like a normal switch case
         {jsx}
     </Case>
 </Switch>
+```
+
+## Network
+
+It handles loading and feedback for HTTP requests.
+
+#### Config
+
+First you need to install [axios](https://www.npmjs.com/package/axios)
+
+```bash
+npm i axios
+```
+
+then you can create an [axios instance](https://www.npmjs.com/package/axios#creating-an-instance) and pass it to the config file and pass it to the ```FlawLessUI``` component
+
+```javascript
+const instance = axios.create({
+    baseURL: BASE_URL,
+})
+
+import { FlawLessUI, createConfig } from 'flawless-ui'
+
+const config = createConfig({
+    axiosInstance: instance,
+})
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+)
+root.render(
+  <FlawLessUI config={config}>
+    <App />
+  </FlawLessUI>
+)
+```
+
+After that you should create your Alert components and pass to the to the config file
+
+```javascript
+import { createConfig } from 'flawless-ui'
+
+const config = createConfig({
+    axiosInstance: instance,
+    components: {
+        alerts: {
+          success: (props: AlertI) => <div>S - {props.title} - {props.message}<button onClick={props.onClose}>close</button></div>,
+          error: (props: AlertI) => <div>E - {props.title} - {props.message}<button onClick={props.onClose}>close</button></div>,
+        },
+    },
+})
 ```
