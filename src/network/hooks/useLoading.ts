@@ -9,7 +9,7 @@ export const useLoading = (url?: string): boolean => {
 
     useEffect(() => {
         if (url) {
-            if (network[url]) setLoading(true)
+            if ((network[url] as boolean) === true) setLoading(true)
             else setLoading(false)
         }
     }, [url, network[url || ' ']])
