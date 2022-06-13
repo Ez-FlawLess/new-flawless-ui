@@ -183,7 +183,7 @@ return (
 If not given a url it will return true if any request is being made or if given a url only returns true for that url
 
 ```javascript
-const loading = useLoading
+const loading = useLoading()
 
 return (
     <>
