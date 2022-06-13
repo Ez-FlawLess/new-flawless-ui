@@ -158,7 +158,7 @@ const config = createConfig({
 
 It handles loading for the given url
 
-```
+```javascript
 useEffect(() => {
     getData()
 }, [])
