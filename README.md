@@ -149,11 +149,11 @@ useEffect(() => {
 }, [])
 
 const getData = async () => {
-  await api.get('seed/picsum/200/300')
+  await api.get(URL)
 }
 
 return (
-    <Loading url="seed/picsum/200/300">
+    <Loading url={URL}>
         {(loading: boolean) => (
             <>
               {loading ? 'loading' : 'done'}
@@ -166,6 +166,8 @@ return (
 ### HttpFeedback
 
 First you should create your Alert components and pass to the to the config file
+
+#### Config
 
 ```javascript
 import { createConfig } from 'flawless-ui'
@@ -180,6 +182,7 @@ const config = createConfig({
     },
 })
 ```
+#### Http Methods
 
 By default ```HttpFeedback``` handles error for all request but success for only post, put, patch and delete requests. You can change this how ever by passing an array of methods to the httpMethods of config
 
@@ -205,17 +208,30 @@ const getData = async () => {
 
 return (
     <HttpFeedback 
-        url="seed/picsum/200/300"
+        url={URL}
     />
 )
 ```
 
 The message and title passed to the alert component come from 3 methods:
-- [onError and onSuccess props](#onError-and-onSuccess-props)
-- success and error key value pairs in config
-- status code message from config
+- [onError and onSuccess props](#onerror-and-onsuccess-props)
+- [success and error key value pairs in config](#status-code-messages)
+- [status code message from config](#status-code-messages)
 
 #### onError and onSuccess props
+
+If these functions return an object with a message key value pair it will be passed to the alert component
+
+```javascript
+<HttpFeedback 
+    url={URL}
+    onError={data => ({message: data.errorMessage, title: 'Error'})
+/>
+```
+
+#### Status Code Messages
+
+You can use the default STATUS_CODE_MESSAGES that are already in the config file or you change the messages to you liking
 
 ### useLoading
 
