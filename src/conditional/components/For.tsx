@@ -6,6 +6,11 @@ export const For = <T,>(props: ForPropsI<T>): ReactElement | null => {
 
     const listLength: number = useMemo(() => props.list.length, [props.list])
 
+    if (listLength === 1) return (
+        <>
+            {props.list.map((item, index) => props.children(item, index, true, true))}
+        </>
+    )
     return (
         <Fragment>
             {props.list.slice(0, 1).map((item, index) => props.firstItem ? props.firstItem(item, index) : props.children(item, index, true, false))}
