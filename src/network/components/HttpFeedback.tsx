@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useMemo } from "react";
+import { FC, useContext, useMemo } from "react";
 import { configContext } from "../../config/context/config.context";
 import { AlertsT } from "../../config/types/alert.types";
 import { networkContext } from "../context/networkContext";
@@ -16,7 +16,16 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         title?: string,
         message?: string,
     }>(() => {
-        const network = networkState.network[props.url] as NetworkFeedbackI
+        const getNetwork: () => NetworkFeedbackI | undefined = () => {
+            if (props.baseUrl) {
+                if (networkState.secondaryNetworks[props.baseUrl]) {
+                    return networkState.secondaryNetworks[props.baseUrl][props.url] as NetworkFeedbackI
+                }
+                return undefined
+            }
+            return networkState.network[props.url] as NetworkFeedbackI
+        }
+        const network = getNetwork()
         if (network && typeof network.success === 'boolean') {
             if (network.success) {
                 if (props.onSuccess) {
@@ -68,6 +77,9 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         return {}
     }, [
         networkState.network[props.url], 
+        networkState.secondaryNetworks[props.baseUrl || ''],
+        props.url,
+        props.baseUrl,
         statusCodeMessages,
         props.onSuccess, 
         props.onError,
