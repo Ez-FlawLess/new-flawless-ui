@@ -5,7 +5,7 @@ import { LoadingPropsI } from "../types/Loading.type";
 
 export const Loading: FC<LoadingPropsI> = props => {
 
-    const loading = useLoading(props.url)
+    const loading = useLoading(props.url, props.baseUrl)
 
     return <>
         {props.children(loading)}

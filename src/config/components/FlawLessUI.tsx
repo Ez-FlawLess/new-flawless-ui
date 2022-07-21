@@ -8,7 +8,10 @@ export const FlawLessUI: FC<PropsWithChildren<FlawLessUIPropsI>> = ({config, chi
         <configContext.Provider value={config}>
             {
                 config.axiosInstance
-                ?  <Network axiosInstance={config.axiosInstance}>
+                ?  <Network 
+                        axiosInstance={config.axiosInstance} 
+                        secondaryAxiosInstances={config.secondaryAxiosInstances}
+                    >
                         {children}
                     </Network>
                 : children

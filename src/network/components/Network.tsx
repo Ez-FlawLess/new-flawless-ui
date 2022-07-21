@@ -5,7 +5,7 @@ import { networkContext } from '../context/networkContext'
 
 export const Network: FC<PropsWithChildren<NetworkPropsI>> = props => {
 
-    const networkState = useNetwork(props.axiosInstance)
+    const networkState = useNetwork(props.axiosInstance, props.secondaryAxiosInstances)
 
     const [effectCalled, setEffectCalled] = useState<boolean>(false)
 

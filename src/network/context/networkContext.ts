@@ -5,4 +5,6 @@ export const networkContext = createContext<networkContextI>({
     network: {},
     setNetwork: () => null,
     numberOfPendingRequests: 0,
+    secondaryNetworks: {},
+    setSecondaryNetworks: () => null,
 })

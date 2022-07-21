@@ -5,6 +5,7 @@ import { ComponentsI } from "./components.types";
 
 export interface ConfigI {
     axiosInstance?: AxiosInstance,
+    secondaryAxiosInstances?: AxiosInstance[],
     components?: ComponentsI,
     statusCodeMessages?: StatusCodeMessagesI,
     httpMethods?: HttpMethodsT,
