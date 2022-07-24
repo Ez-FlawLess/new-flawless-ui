@@ -323,7 +323,6 @@ const BASE_URL = secondaryInstance.defaults.baseURL
 // useLoading hook
 const loading = useLoading(URL, BASE_URL)
 
-
 // Loading component
 <Loading url={URL} baseUrl={BASE_URL}>
     {(loading: boolean) => (
