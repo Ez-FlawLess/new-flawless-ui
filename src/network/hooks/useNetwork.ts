@@ -2,11 +2,11 @@ import { AxiosInstance } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { configContext } from "../../config/context/config.context";
 import { HttpMethodT } from "../types/httpMethod.types";
-import { NetworkI, networkContextI, SecondaryNetworksI } from "../types/network.types";
+import { NetworkI, networkContextI, SecondaryNetworksI, AxiosConfigT, AxiosInstanceI } from "../types/network.types";
 import { statusCodesT } from "../types/statusCode.types";
 import { extractUrl } from "../util/extractUrl";
 
-export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances: AxiosInstance[] = []): networkContextI => {
+export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances: AxiosConfigT[] = []): networkContextI => {
 
     const config = useContext(configContext)
 
@@ -17,7 +17,9 @@ export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances
 
     useEffect(() => {
 
-        const requestInterceptorId = axiosInstance.interceptors.request.use(
+        const ai: AxiosInstance = (axiosInstance as AxiosInstanceI).instance ? (axiosInstance as AxiosInstanceI).instance : (axiosInstance as AxiosInstance) 
+
+        const requestInterceptorId = ai.interceptors.request.use(
             config => {
 
                 const url: string = extractUrl(config.url || '')
@@ -29,14 +31,19 @@ export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances
 
                 setNumberOfPendingRequests(prev => prev + 1)
 
+                const onConfig = (axiosInstance as AxiosInstanceI).onConfig
+                if (onConfig) return onConfig(config)
+
                 return config
             },
             error => {
+                const onConfigError = (axiosInstance as AxiosInstanceI).onConfigError
+                if (onConfigError) error = onConfigError(error)
                 throw error
             },
         )
 
-        const responseInterceptorId = axiosInstance.interceptors.response.use(
+        const responseInterceptorId = ai.interceptors.response.use(
             response => {
 
                 const url: string = extractUrl(response.config.url || '')
@@ -52,9 +59,10 @@ export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances
                         : false,
                 }))
 
-                
-
                 setNumberOfPendingRequests(prev => prev - 1)
+
+                const onResponse = (axiosInstance as AxiosInstanceI).onResponse
+                if (onResponse) return onResponse(response)
 
                 return response
             },
@@ -73,29 +81,31 @@ export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances
 
                 setNumberOfPendingRequests(prev => prev - 1)
 
+                const onResponseError = (axiosInstance as AxiosInstanceI).onResponseError
+                if (onResponseError) error = onResponseError(error)
+
                 throw error
             }
         )
 
         return () => {
-            axiosInstance.interceptors.request.eject(requestInterceptorId)
-            axiosInstance.interceptors.response.eject(responseInterceptorId)
+            ai.interceptors.request.eject(requestInterceptorId)
+            ai.interceptors.response.eject(responseInterceptorId)
         }
 
     }, [axiosInstance])
 
     useEffect(() => {
 
-        console.log('secondaryAxiosInstances', secondaryAxiosInstances)
-
         const interceptorIds: {
             requestInterceptorId: number,
             responseInterceptorId: number,
-        }[] = secondaryAxiosInstances.map(ai => {
+        }[] = secondaryAxiosInstances.map(sai => {
+
+            const ai: AxiosInstance = (sai as AxiosInstanceI).instance ? (sai as AxiosInstanceI).instance : (sai as AxiosInstance) 
 
             const requestInterceptorId = ai.interceptors.request.use(
                 config => {
-                    console.log('config', config)
 
                     const url: string = extractUrl(config.url || '')
 
@@ -110,18 +120,21 @@ export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances
                             [url]: true,
                         },
                     }))
+
+                    const onConfig = (sai as AxiosInstanceI).onConfig
+                    if (onConfig) return onConfig(config)
     
                     return config
                 },
                 error => {
+                    const onConfigError = (sai as AxiosInstanceI).onConfigError
+                    if (onConfigError) error = onConfigError(error)
                     throw error
                 },
             )
 
             const responseInterceptorId = ai.interceptors.response.use(
                 response => {
-
-                    console.log('response',response )
     
                     const url: string = extractUrl(response.config.url || '')
 
@@ -142,6 +155,9 @@ export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances
                                 : false,
                         },
                     }))
+
+                    const onResponse = (sai as AxiosInstanceI).onResponse
+                    if (onResponse) return onResponse(response)
     
                     return response
                 },
@@ -164,20 +180,24 @@ export const useNetwork = (axiosInstance: AxiosInstance, secondaryAxiosInstances
                             },
                         },
                     }))
+
+                    const onResponseError = (sai as AxiosInstanceI).onResponseError
+                    if (onResponseError) error = onResponseError(error)
     
                     throw error
                 }
             )
 
-                return {
-                    requestInterceptorId,
-                    responseInterceptorId,
-                }
+            return {
+                requestInterceptorId,
+                responseInterceptorId,
+            }
             
         })
 
         return () => {
-            secondaryAxiosInstances.forEach((ai, index) => {
+            secondaryAxiosInstances.forEach((sai, index) => {
+                const ai: AxiosInstance = (sai as AxiosInstanceI).instance ? (sai as AxiosInstanceI).instance : (sai as AxiosInstance) 
                 ai.interceptors.request.eject(interceptorIds[index].requestInterceptorId)
                 ai.interceptors.response.eject(interceptorIds[index].responseInterceptorId)
             })

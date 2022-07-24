@@ -1,4 +1,4 @@
-import { AxiosInstance } from "axios";
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { statusCodesT } from "./statusCode.types";
 
@@ -17,8 +17,8 @@ export interface SecondaryNetworksI {
 }
 
 export interface NetworkPropsI {
-    axiosInstance: AxiosInstance,
-    secondaryAxiosInstances?: AxiosInstance[],
+    axiosInstance: AxiosConfigT,
+    secondaryAxiosInstances?: AxiosConfigT[],
 }
 
 export interface networkContextI  {
@@ -27,4 +27,14 @@ export interface networkContextI  {
     numberOfPendingRequests: number,
     secondaryNetworks: SecondaryNetworksI,
     setSecondaryNetworks: Dispatch<SetStateAction<SecondaryNetworksI>>,
+}
+
+export type AxiosConfigT = AxiosInstance | AxiosInstanceI
+
+export interface AxiosInstanceI {
+    instance: AxiosInstance,
+    onConfig?: (config: AxiosRequestConfig<any>) => AxiosRequestConfig<any>, 
+    onConfigError?: (d: any) => any,
+    onResponse?: (response: AxiosResponse<any, any>) => AxiosResponse<any, any>,
+    onResponseError?: (d: any) => any,
 }
