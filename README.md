@@ -134,6 +134,37 @@ root.render(
 )
 ```
 
+You can also pass functions to be called in the axios request life cycle
+
+```javascript
+const instance = axios.create({
+    baseURL: BASE_URL,
+})
+
+import { FlawLessUI, createConfig } from 'flawless-ui'
+
+const config = createConfig({
+    axiosInstance: {
+        instance: instance,
+        onConfig: (config: AxiosRequestConfig<any>) => {
+            // Add parameters you want to config
+            return config
+        }, 
+        onConfigError: (error: any) => {
+            // catch the error
+            throw new error
+        },
+        onResponse: (response: AxiosResponse<any, any>) => {
+            return response
+        },
+        onResponseError: (error: any) => {
+            // catch the error
+            throw new error
+        },
+    },
+})
+```
+
 #### Components
 
 - [Loading](#Loading)
