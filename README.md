@@ -174,6 +174,10 @@ const config = createConfig({
 
 - [useLoading](#useLoading)
 
+### Variants
+
+- [Multiple Axios Instances](#multiple-axios-instances)
+
 ### Loading
 
 It handles loading for the given url
@@ -280,4 +284,58 @@ return (
         {loading ? 'loading' : 'done'}
     </>
 )
+```
+
+### Multiple Axios Instances
+
+You can have multiple axios instances in the same app. You can have one primary instance and unlimited secondary instances.
+
+#### Config
+
+You can pass the secondary axios instances to the ```secondaryAxiosInstances``` in the config as an array.
+
+```javascript
+const primaryInstance = axios.create({
+    baseURL: BASE_URL,
+})
+
+const secondaryInstance = axios.create({
+    baseURL: SECONDARY_BASE_URL,
+})
+
+import { FlawLessUI, createConfig } from 'flawless-ui'
+
+const config = createConfig({
+    axiosInstance: primaryInstance,
+    secondaryAxiosInstances: [secondaryInstance],
+})
+```
+#### Usage
+
+For the Network component and hooks to work for the URLs of an secondary instance you should also pass the base URL of that instance.
+
+```javascript
+
+import secondaryInstance from 'api'
+
+const BASE_URL = secondaryInstance.defaults.baseURL
+
+// useLoading hook
+const loading = useLoading(URL, BASE_URL)
+
+
+// Loading component
+<Loading url={URL} baseUrl={BASE_URL}>
+    {(loading: boolean) => (
+        <>
+          {loading ? 'loading' : 'done'}
+        </>
+     )}
+</Loading>
+
+// HttpFeedback component
+<HttpFeedback 
+    url={URL}
+    baseUrl={BASE_URL}
+/>
 ```
