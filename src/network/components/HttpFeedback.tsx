@@ -1,8 +1,8 @@
-import { FC, useContext, useMemo } from "react";
+import { FC, useContext, useEffect, useMemo } from "react";
 import { configContext } from "../../config/context/config.context";
 import { AlertsT } from "../../config/types/alert.types";
 import { networkContext } from "../context/networkContext";
-import { HttpFeedbackPropsI } from "../types/HttpFeedback.types";
+import { FeedbackI, HttpFeedbackPropsI } from "../types/HttpFeedback.types";
 import { NetworkFeedbackI } from "../types/network.types";
 import { StatusCodeGroupT } from "../types/statusCode.types";
 
@@ -15,6 +15,7 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         status?: AlertsT,
         title?: string,
         message?: string,
+        response?: any,
     }>(() => {
         const getNetwork: () => NetworkFeedbackI | undefined = () => {
             if (props.baseUrl) {
@@ -27,16 +28,25 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         }
         const network = getNetwork()
         if (network && typeof network.success === 'boolean') {
+            const response = network.response
             if (network.success) {
                 if (props.onSuccess) {
                     const propsOnSuccessReturn = props.onSuccess(network.response)
                     if (propsOnSuccessReturn) return {
                         status: 'success',
-                        ...propsOnSuccessReturn,
+                        response,
+                        ...(
+                            (propsOnSuccessReturn as FeedbackI).message || (propsOnSuccessReturn as FeedbackI).title
+                            ? (propsOnSuccessReturn as FeedbackI)
+                            : {
+                                message: propsOnSuccessReturn as string,
+                            }
+                        ),
                     }
                 }
                 if (statusCodeMessages?.success) return {
                     status: 'success',
+                    response,
                     ...statusCodeMessages.success,
                 }
             } else if (!network.success) {
@@ -44,13 +54,21 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
                     const propsOnErrorReturn = props.onError(network.response)
                     if (propsOnErrorReturn) return {
                         status: 'error',
-                        ...propsOnErrorReturn,
+                        response,
+                        ...(
+                            (propsOnErrorReturn as FeedbackI).message || (propsOnErrorReturn as FeedbackI).title
+                            ? (propsOnErrorReturn as FeedbackI)
+                            : {
+                                message: propsOnErrorReturn as string,
+                            }
+                        ),
                     }
                 }
                 if (statusCodeMessages?.error) {
                     const statusCodeErrorReturn = statusCodeMessages.error.message(network.response)
                     if (statusCodeErrorReturn) return {
                         status: 'error',
+                        response,
                         title: statusCodeMessages.error.title,
                         message: statusCodeErrorReturn,
                     }
@@ -62,12 +80,14 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
                 if (typeof statusCodeMessage === 'string') {
                     return {
                         status: network.success ? 'success' : 'error',
+                        response,
                         title: statusCodeMessages[statusCodeGroup].title,
                         message: statusCodeMessage,
                     }
                 } else {
                     return {
                         status: network.success ? 'success' : 'error',
+                        response,
                         title: statusCodeMessages[statusCodeGroup].title,
                         message: statusCodeMessage[network.statusCode] as string,
                     }
@@ -81,7 +101,7 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         props.url,
         props.baseUrl,
         statusCodeMessages,
-        props.onSuccess, 
+        props.onSuccess,
         props.onError,
     ])
 
