@@ -34,7 +34,7 @@ export type AxiosConfigT = AxiosInstance | AxiosInstanceI
 export interface AxiosInstanceI {
     instance: AxiosInstance,
     onConfig?: (config: AxiosRequestConfig<any>) => AxiosRequestConfig<any>, 
-    onConfigError?: (d: any) => any,
+    onConfigError?: (error: any) => any,
     onResponse?: (response: AxiosResponse<any, any>) => AxiosResponse<any, any>,
-    onResponseError?: (d: any) => any,
+    onResponseError?: (error: any) => any,
 }
