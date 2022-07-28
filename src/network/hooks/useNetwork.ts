@@ -31,14 +31,10 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
 
                 setNumberOfPendingRequests(prev => prev + 1)
 
-                const onConfig = (axiosInstance as AxiosInstanceI).onConfig
-                if (onConfig) return onConfig(config)
-
-                return config
+                return (axiosInstance as AxiosInstanceI).onConfig?.(config) ?? config
             },
             error => {
-                const onConfigError = (axiosInstance as AxiosInstanceI).onConfigError
-                if (onConfigError) error = onConfigError(error)
+                error = (axiosInstance as AxiosInstanceI).onConfigError?.(error) ?? error
                 throw error
             },
         )
@@ -61,10 +57,7 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
 
                 setNumberOfPendingRequests(prev => prev - 1)
 
-                const onResponse = (axiosInstance as AxiosInstanceI).onResponse
-                if (onResponse) return onResponse(response)
-
-                return response
+                return (axiosInstance as AxiosInstanceI).onResponse?.(response) ?? response
             },
             error => {
 
@@ -81,9 +74,7 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
 
                 setNumberOfPendingRequests(prev => prev - 1)
 
-                const onResponseError = (axiosInstance as AxiosInstanceI).onResponseError
-                if (onResponseError) error = onResponseError(error)
-
+                error = (axiosInstance as AxiosInstanceI).onConfigError?.(error) ?? error
                 throw error
             }
         )
@@ -121,14 +112,12 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
                         },
                     }))
 
-                    const onConfig = (sai as AxiosInstanceI).onConfig
-                    if (onConfig) return onConfig(config)
-    
-                    return config
+                    setNumberOfPendingRequests(prev => prev + 1)
+
+                    return (axiosInstance as AxiosInstanceI).onConfig?.(config) ?? config
                 },
                 error => {
-                    const onConfigError = (sai as AxiosInstanceI).onConfigError
-                    if (onConfigError) error = onConfigError(error)
+                    error = (axiosInstance as AxiosInstanceI).onConfigError?.(error) ?? error
                     throw error
                 },
             )
@@ -156,10 +145,9 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
                         },
                     }))
 
-                    const onResponse = (sai as AxiosInstanceI).onResponse
-                    if (onResponse) return onResponse(response)
-    
-                    return response
+                    setNumberOfPendingRequests(prev => prev - 1)
+
+                    return (axiosInstance as AxiosInstanceI).onResponse?.(response) ?? response
                 },
                 error => {
     
@@ -181,9 +169,9 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
                         },
                     }))
 
-                    const onResponseError = (sai as AxiosInstanceI).onResponseError
-                    if (onResponseError) error = onResponseError(error)
-    
+                    setNumberOfPendingRequests(prev => prev - 1)
+
+                    error = (axiosInstance as AxiosInstanceI).onConfigError?.(error) ?? error
                     throw error
                 }
             )
