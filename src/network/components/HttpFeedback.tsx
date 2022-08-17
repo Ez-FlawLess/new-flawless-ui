@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useMemo } from "react";
+import { FC, useContext, useMemo } from "react";
 import { configContext } from "../../config/context/config.context";
 import { AlertsT } from "../../config/types/alert.types";
 import { networkContext } from "../context/networkContext";
@@ -105,10 +105,19 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         props.onError,
     ])
 
-    const handleOnClose = () => networkState.setNetwork(prev => ({
-        ...prev,
-        [props.url]: false,
-    }))
+    const handleOnClose = () => {
+        if (props.baseUrl) networkState.setSecondaryNetworks(prev => ({
+            ...prev,
+            [props.baseUrl!]: {
+                ...prev[props.baseUrl!],
+                [props.url]: false,
+            },
+        }))
+        else networkState.setNetwork(prev => ({
+            ...prev,
+            [props.url]: false,
+        }))
+    }
 
     if (
         feedback.message 
