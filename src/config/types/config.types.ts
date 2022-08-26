@@ -9,4 +9,5 @@ export interface ConfigI {
     components?: ComponentsI,
     statusCodeMessages?: StatusCodeMessagesI,
     httpMethods?: HttpMethodsT,
+    httpTimer?: number,
 }

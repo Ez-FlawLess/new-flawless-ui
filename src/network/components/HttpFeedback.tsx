@@ -1,4 +1,4 @@
-import { FC, useContext, useMemo } from "react";
+import { FC, ReactElement, useContext, useEffect, useMemo } from "react";
 import { configContext } from "../../config/context/config.context";
 import { AlertsT } from "../../config/types/alert.types";
 import { networkContext } from "../context/networkContext";
@@ -6,9 +6,9 @@ import { FeedbackI, HttpFeedbackPropsI } from "../types/HttpFeedback.types";
 import { NetworkFeedbackI } from "../types/network.types";
 import { StatusCodeGroupT } from "../types/statusCode.types";
 
-export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
+export const HttpFeedback = <T, >(props: HttpFeedbackPropsI<T>): ReactElement<any, any> | null => {
 
-    const { components, statusCodeMessages } = useContext(configContext)
+    const { components, statusCodeMessages, httpTimer } = useContext(configContext)
     const networkState = useContext(networkContext)
 
     const feedback = useMemo<{
@@ -105,6 +105,18 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         props.onError,
     ])
 
+    useEffect(() => {
+        if (httpTimer && feedback.message) {
+            const timeoutId = setTimeout(() => {
+                handleOnClose()
+            }, httpTimer)
+
+            return () => {
+                clearTimeout(timeoutId)
+            }
+        }
+    }, [httpTimer, feedback.message])
+
     const handleOnClose = () => {
         if (props.baseUrl) networkState.setSecondaryNetworks(prev => ({
             ...prev,
@@ -133,6 +145,7 @@ export const HttpFeedback: FC<HttpFeedbackPropsI> = props => {
         title: feedback.title,
         message: feedback.message,
         onClose: handleOnClose,
+        props: props.alertProps,
     })
     return null
 }
