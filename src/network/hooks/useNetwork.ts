@@ -74,7 +74,7 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
 
                 setNumberOfPendingRequests(prev => prev - 1)
 
-                error = (axiosInstance as AxiosInstanceI).onConfigError?.(error) ?? error
+                error = (axiosInstance as AxiosInstanceI).onResponseError?.(error) ?? error
                 throw error
             }
         )
@@ -171,7 +171,7 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
 
                     setNumberOfPendingRequests(prev => prev - 1)
 
-                    error = (sai as AxiosInstanceI).onConfigError?.(error) ?? error
+                    error = (sai as AxiosInstanceI).onResponseError?.(error) ?? error
                     throw error
                 }
             )
