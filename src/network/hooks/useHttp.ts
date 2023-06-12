@@ -10,11 +10,16 @@ export const useHttp = (): {
     return {
         loading,
         http: async <T>(call: Promise<T>) => {
-            setLoading(true)
-            const res = await call
+            try {
+                setLoading(true)
+                const res = await call
 
-            setLoading(false)
-            return res
+                setLoading(false)
+                return res
+            } catch (err: any) {
+                setLoading(false)
+                throw new Error(err)
+            }
         }
     }
 }
