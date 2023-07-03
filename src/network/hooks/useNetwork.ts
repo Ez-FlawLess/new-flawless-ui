@@ -10,7 +10,6 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
 
     const config = useContext(configContext)
 
-    const [lastHttpId, setLastHttpId] = useState<number>(1000)
     const [network, setNetwork] = useState<NetworkI>({})
     const [numberOfPendingRequests, setNumberOfPendingRequests] = useState<number>(0)
 
@@ -196,5 +195,5 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
 
     }, [secondaryAxiosInstances])
 
-    return {network, setNetwork, numberOfPendingRequests, secondaryNetworks, setSecondaryNetworks, lastHttpId, setLastHttpId}
+    return {network, setNetwork, numberOfPendingRequests, secondaryNetworks, setSecondaryNetworks}
 }

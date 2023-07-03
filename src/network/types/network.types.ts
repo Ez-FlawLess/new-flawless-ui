@@ -27,8 +27,6 @@ export interface networkContextI  {
     numberOfPendingRequests: number,
     secondaryNetworks: SecondaryNetworksI,
     setSecondaryNetworks: Dispatch<SetStateAction<SecondaryNetworksI>>,
-    lastHttpId: number,
-    setLastHttpId: Dispatch<SetStateAction<number>>,
 }
 
 export type AxiosConfigT = AxiosInstance | AxiosInstanceI
