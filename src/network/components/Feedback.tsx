@@ -1,18 +1,17 @@
-import { FC, ReactElement, useContext } from "react";
+import { FC, useContext } from "react";
 import { configContext } from "../../config/context/config.context";
-import { AlertI } from "../../package";
 import { useFeedback } from "../hooks/useFeedback";
 import { HttpFeedbackPropsI } from "../types/HttpFeedback.types";
 import { NetworkFeedbackI } from "../types/network.types";
 
 export const Feedback: (
-    networkFeedback: NetworkFeedbackI | null,
+    networkFeedback: boolean | NetworkFeedbackI | undefined,
     onClose: () => void,
 ) => FC<Omit<HttpFeedbackPropsI<any>, 'url' | 'baseUrl'>> = (networkFeedback, onClose) => {
     
     const Test: FC<Omit<HttpFeedbackPropsI<any>, 'url' | 'baseUrl'>> = (props) => {
 
-        if (networkFeedback === null) return null
+        if (networkFeedback === undefined || typeof networkFeedback === "boolean") return null
 
         const { components, statusCodeMessages } = useContext(configContext)
         

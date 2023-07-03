@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { networkContext } from "../context/networkContext"
 
-export const useLoading = (url?: string, baseURL?: string): boolean => {
+export const useLoading = (url?: string | number, baseURL?: string): boolean => {
 
     const {network, numberOfPendingRequests, secondaryNetworks} = useContext(networkContext)
 

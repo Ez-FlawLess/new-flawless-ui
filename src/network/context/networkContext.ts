@@ -7,4 +7,6 @@ export const networkContext = createContext<networkContextI>({
     numberOfPendingRequests: 0,
     secondaryNetworks: {},
     setSecondaryNetworks: () => null,
+    lastHttpId: 100,
+    setLastHttpId: () => null,
 })

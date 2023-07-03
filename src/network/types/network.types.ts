@@ -9,7 +9,7 @@ export interface NetworkFeedbackI {
 }
 
 export interface NetworkI {
-    [url: string]: boolean | NetworkFeedbackI,
+    [url: string | number]: boolean | NetworkFeedbackI,
 }
 
 export interface SecondaryNetworksI {
@@ -17,7 +17,7 @@ export interface SecondaryNetworksI {
 }
 
 export interface NetworkPropsI {
-    axiosInstance: AxiosConfigT,
+    axiosInstance?: AxiosConfigT,
     secondaryAxiosInstances?: AxiosConfigT[],
 }
 
@@ -27,6 +27,8 @@ export interface networkContextI  {
     numberOfPendingRequests: number,
     secondaryNetworks: SecondaryNetworksI,
     setSecondaryNetworks: Dispatch<SetStateAction<SecondaryNetworksI>>,
+    lastHttpId: number,
+    setLastHttpId: Dispatch<SetStateAction<number>>,
 }
 
 export type AxiosConfigT = AxiosInstance | AxiosInstanceI

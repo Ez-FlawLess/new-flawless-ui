@@ -1,5 +1,5 @@
 export interface HttpFeedbackPropsI<T> {
-    url: string,
+    url: string | number,
     baseUrl?: string,
     showSuccess?: boolean,
     showError?: boolean,

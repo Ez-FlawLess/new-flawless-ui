@@ -6,10 +6,11 @@ import { NetworkI, networkContextI, SecondaryNetworksI, AxiosConfigT, AxiosInsta
 import { statusCodesT } from "../types/statusCode.types";
 import { extractUrl } from "../util/extractUrl";
 
-export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances: AxiosConfigT[] = []): networkContextI => {
+export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances: AxiosConfigT[] = []): networkContextI => {
 
     const config = useContext(configContext)
 
+    const [lastHttpId, setLastHttpId] = useState<number>(1000)
     const [network, setNetwork] = useState<NetworkI>({})
     const [numberOfPendingRequests, setNumberOfPendingRequests] = useState<number>(0)
 
@@ -17,71 +18,73 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
 
     useEffect(() => {
 
-        const ai: AxiosInstance = (axiosInstance as AxiosInstanceI).instance ? (axiosInstance as AxiosInstanceI).instance : (axiosInstance as AxiosInstance) 
+        if (axiosInstance !== undefined) {
+            const ai: AxiosInstance = (axiosInstance as AxiosInstanceI).instance ? (axiosInstance as AxiosInstanceI).instance : (axiosInstance as AxiosInstance) 
 
-        const requestInterceptorId = ai.interceptors.request.use(
-            config => {
+            const requestInterceptorId = ai.interceptors.request.use(
+                config => {
 
-                const url: string = extractUrl(config.url || '')
+                    const url: string = extractUrl(config.url || '')
 
-                setNetwork(prev => ({
-                    ...prev,
-                    [url]: true,
-                }))
+                    setNetwork(prev => ({
+                        ...prev,
+                        [url]: true,
+                    }))
 
-                setNumberOfPendingRequests(prev => prev + 1)
+                    setNumberOfPendingRequests(prev => prev + 1)
 
-                return (axiosInstance as AxiosInstanceI).onConfig?.(config) ?? config
-            },
-            error => {
-                error = (axiosInstance as AxiosInstanceI).onConfigError?.(error) ?? error
-                throw error
-            },
-        )
+                    return (axiosInstance as AxiosInstanceI).onConfig?.(config) ?? config
+                },
+                error => {
+                    error = (axiosInstance as AxiosInstanceI).onConfigError?.(error) ?? error
+                    throw error
+                },
+            )
 
-        const responseInterceptorId = ai.interceptors.response.use(
-            response => {
+            const responseInterceptorId = ai.interceptors.response.use(
+                response => {
 
-                const url: string = extractUrl(response.config.url || '')
+                    const url: string = extractUrl(response.config.url || '')
 
-                setNetwork(prev => ({
-                    ...prev,
-                    [url]:  config.httpMethods?.includes(response.config.method as HttpMethodT)
-                        ? {
-                            success: true,
-                            statusCode: response.status as statusCodesT,
-                            response: response.data,
-                        }
-                        : false,
-                }))
+                    setNetwork(prev => ({
+                        ...prev,
+                        [url]:  config.httpMethods?.includes(response.config.method as HttpMethodT)
+                            ? {
+                                success: true,
+                                statusCode: response.status as statusCodesT,
+                                response: response.data,
+                            }
+                            : false,
+                    }))
 
-                setNumberOfPendingRequests(prev => prev - 1)
+                    setNumberOfPendingRequests(prev => prev - 1)
 
-                return (axiosInstance as AxiosInstanceI).onResponse?.(response) ?? response
-            },
-            error => {
+                    return (axiosInstance as AxiosInstanceI).onResponse?.(response) ?? response
+                },
+                error => {
 
-                const url: string = extractUrl(error.config.url || '')
+                    const url: string = extractUrl(error.config.url || '')
 
-                setNetwork(prev => ({
-                    ...prev,
-                    [url]: {
-                        success: false,
-                        statusCode: error.response.status,
-                        response: error.response.data,
-                    },
-                }))
+                    setNetwork(prev => ({
+                        ...prev,
+                        [url]: {
+                            success: false,
+                            statusCode: error.response.status,
+                            response: error.response.data,
+                        },
+                    }))
 
-                setNumberOfPendingRequests(prev => prev - 1)
+                    setNumberOfPendingRequests(prev => prev - 1)
 
-                error = (axiosInstance as AxiosInstanceI).onResponseError?.(error) ?? error
-                throw error
+                    error = (axiosInstance as AxiosInstanceI).onResponseError?.(error) ?? error
+                    throw error
+                }
+            )
+
+            return () => {
+                ai.interceptors.request.eject(requestInterceptorId)
+                ai.interceptors.response.eject(responseInterceptorId)
             }
-        )
-
-        return () => {
-            ai.interceptors.request.eject(requestInterceptorId)
-            ai.interceptors.response.eject(responseInterceptorId)
         }
 
     }, [axiosInstance])
@@ -193,5 +196,5 @@ export const useNetwork = (axiosInstance: AxiosConfigT, secondaryAxiosInstances:
 
     }, [secondaryAxiosInstances])
 
-    return {network, setNetwork, numberOfPendingRequests, secondaryNetworks, setSecondaryNetworks}
+    return {network, setNetwork, numberOfPendingRequests, secondaryNetworks, setSecondaryNetworks, lastHttpId, setLastHttpId}
 }

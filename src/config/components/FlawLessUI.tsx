@@ -6,16 +6,12 @@ import { configContext } from "../context/config.context";
 export const FlawLessUI: FC<PropsWithChildren<FlawLessUIPropsI>> = ({config, children}) => {
     return (
         <configContext.Provider value={config}>
-            {
-                config.axiosInstance
-                ?  <Network 
-                        axiosInstance={config.axiosInstance} 
-                        secondaryAxiosInstances={config.secondaryAxiosInstances}
-                    >
-                        {children}
-                    </Network>
-                : children
-            }
+            <Network 
+                axiosInstance={config.axiosInstance} 
+                secondaryAxiosInstances={config.secondaryAxiosInstances}
+            >
+                {children}
+            </Network>
         </configContext.Provider>
     )
 }
