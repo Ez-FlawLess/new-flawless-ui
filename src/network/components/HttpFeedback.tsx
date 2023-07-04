@@ -31,7 +31,7 @@ export const HttpFeedback = <T, >(props: HttpFeedbackPropsI<T>): ReactElement<an
     })
 
     useEffect(() => {
-        if (httpTimer && feedback.message) {
+        if (httpTimer && feedback !== null) {
             const timeoutId = setTimeout(() => {
                 handleOnClose()
             }, httpTimer)
@@ -40,7 +40,7 @@ export const HttpFeedback = <T, >(props: HttpFeedbackPropsI<T>): ReactElement<an
                 clearTimeout(timeoutId)
             }
         }
-    }, [httpTimer, feedback.message])
+    }, [httpTimer, feedback])
 
     const handleOnClose = () => {
         if (props.baseUrl) networkState.setSecondaryNetworks(prev => ({
@@ -57,7 +57,7 @@ export const HttpFeedback = <T, >(props: HttpFeedbackPropsI<T>): ReactElement<an
     }
 
     if (
-        feedback.message 
+        feedback !== null
         && 
         components?.alerts 
         &&

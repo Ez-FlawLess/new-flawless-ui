@@ -1,47 +1,34 @@
 import { FC, useContext } from "react";
 import { configContext } from "../../config/context/config.context";
-import { useFeedback } from "../hooks/useFeedback";
-import { HttpFeedbackPropsI } from "../types/HttpFeedback.types";
-import { NetworkFeedbackI } from "../types/network.types";
+import { HttpFeedbackPropsI, UseFeedBackI } from "../types/HttpFeedback.types";
 
 export const Feedback: (
-    networkFeedback: boolean | NetworkFeedbackI | undefined,
+    feedback: UseFeedBackI | null,
     onClose: () => void,
-) => FC<Omit<HttpFeedbackPropsI<any>, 'url' | 'baseUrl'>> = (networkFeedback, onClose) => {
+    options: Pick<HttpFeedbackPropsI<any>, 'onSuccess' | 'onError' | 'showSuccess' | 'showError'>,
+) => FC<any> = (feedback, onClose, options) => {
     
-    const Test: FC<Omit<HttpFeedbackPropsI<any>, 'url' | 'baseUrl'>> = (props) => {
+    const Test: FC<any> = (props) => {
 
-        if (networkFeedback === undefined || typeof networkFeedback === "boolean") return null
-
-        const { components, statusCodeMessages } = useContext(configContext)
-        
-        const feedback = useFeedback(networkFeedback, statusCodeMessages, {
-            onSuccess: props.onSuccess,
-            onError: props.onError,
-        })
+        const { components } = useContext(configContext)
         
         if (
-            feedback.message 
+            feedback !== null 
             && 
             components?.alerts 
             &&
             (
-                (feedback.status === 'success' && props.showSuccess)
+                (feedback.status === 'success' && options.showSuccess)
                 ||
-                (feedback.status === 'error' && props.showError)
+                (feedback.status === 'error' && options.showError)
             )
         ) return components.alerts[feedback.status]({
             title: feedback.title,
             message: feedback.message,
             onClose,
-            props: props.alertProps,
+            props,
         })
         return null
-    }
-
-    Test.defaultProps = {
-        showSuccess: true,
-        showError: true,
     }
 
     return Test

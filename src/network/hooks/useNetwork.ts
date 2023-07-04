@@ -5,6 +5,7 @@ import { HttpMethodT } from "../types/httpMethod.types";
 import { NetworkI, networkContextI, SecondaryNetworksI, AxiosConfigT, AxiosInstanceI } from "../types/network.types";
 import { statusCodesT } from "../types/statusCode.types";
 import { extractUrl } from "../util/extractUrl";
+import { GlobalFeedbacks } from "../types/HttpFeedback.types";
 
 export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances: AxiosConfigT[] = []): networkContextI => {
 
@@ -12,6 +13,7 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
 
     const [network, setNetwork] = useState<NetworkI>({})
     const [numberOfPendingRequests, setNumberOfPendingRequests] = useState<number>(0)
+    const [globalFeedbacks, setGlobalFeedbacks] = useState<GlobalFeedbacks[]>([])
 
     const [secondaryNetworks, setSecondaryNetworks] = useState<SecondaryNetworksI>({})
 
@@ -195,5 +197,5 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
 
     }, [secondaryAxiosInstances])
 
-    return {network, setNetwork, numberOfPendingRequests, secondaryNetworks, setSecondaryNetworks}
+    return {network, setNetwork, numberOfPendingRequests, secondaryNetworks, setSecondaryNetworks, globalFeedbacks, setGlobalFeedbacks}
 }

@@ -10,4 +10,5 @@ export interface ConfigI {
     statusCodeMessages?: StatusCodeMessagesI,
     httpMethods?: HttpMethodsT,
     httpTimer?: number,
+    globalHttpFeedback?: boolean,
 }
