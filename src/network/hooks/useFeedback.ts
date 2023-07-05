@@ -11,12 +11,21 @@ export const useFeedback = (
     onSet?: (feedback: UseFeedBackI) => void,
 ): UseFeedBackI | null => {
     const feedback = useMemo<UseFeedBackI | null>(() => {
-        const returnFeedback = (feedback: UseFeedBackI): UseFeedBackI => {
-            onSet?.(feedback)
-            return feedback
-        }
         if (network && typeof network.success === 'boolean') {
+            const statusCodeGroup: StatusCodeGroupT = parseInt(network.statusCode.toString()[0]) as StatusCodeGroupT
             const response = network.response
+            const returnFeedback = (feedback: Omit<UseFeedBackI, 'statusCode' | 'statusCodeGroup'>): UseFeedBackI => {
+                const f: UseFeedBackI = {
+                    status: feedback.status,
+                    title: feedback.title,
+                    message: feedback.message,
+                    response: feedback.response,
+                    statusCode: network.statusCode,
+                    statusCodeGroup,
+                }
+                onSet?.(f)
+                return f
+            }
             if (network.success) {
                 if (props.onSuccess) {
                     const propsOnSuccessReturn = props.onSuccess(network.response)
@@ -62,7 +71,6 @@ export const useFeedback = (
                     })
                 }
             }
-            const statusCodeGroup: StatusCodeGroupT = parseInt(network.statusCode.toString()[0]) as StatusCodeGroupT
             if (statusCodeMessages) {
                 const statusCodeMessage: any = statusCodeMessages[statusCodeGroup].message
                 if (typeof statusCodeMessage === 'string') {
