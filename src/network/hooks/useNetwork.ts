@@ -199,7 +199,7 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
     }, [secondaryAxiosInstances])
 
     const newGlobalFeedback: networkContextI['newGlobalFeedback'] = (id, network, options) => {
-        if ((options.showSuccess && network.success) || (options.showError && !network.success)) {
+        if ((!options.hideSuccess && network.success) || (!options.hideError && !network.success)) {
             const feedback = createFeedback(network, config.statusCodeMessages, options)
             if (feedback !== null) {
                 (feedback as GlobalFeedbacks).id = id

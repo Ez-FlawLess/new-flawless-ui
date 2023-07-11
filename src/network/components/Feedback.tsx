@@ -7,7 +7,7 @@ import { NetworkFeedbackI } from "../types/network.types";
 export const Feedback = (
     network: NetworkFeedbackI | null | undefined, 
     onClose: () => void, 
-    options: Pick<HttpFeedbackPropsI<any>, 'onSuccess' | 'onError' | 'showSuccess' | 'showError'>,
+    options: Pick<HttpFeedbackPropsI<any>, 'onSuccess' | 'onError' | 'hideError' | 'hideSuccess'>,
 ): FC<any> => {
     
     const Test: FC<any> = (props) => {
@@ -25,9 +25,9 @@ export const Feedback = (
             components?.alerts 
             &&
             (
-                (feedback.status === 'success' && options.showSuccess)
+                (feedback.status === 'success' && !options.hideSuccess)
                 ||
-                (feedback.status === 'error' && options.showError)
+                (feedback.status === 'error' && !options.hideError)
             )
         ) return components.alerts[feedback.status]({
             title: feedback.title,

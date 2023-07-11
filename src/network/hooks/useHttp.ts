@@ -6,10 +6,7 @@ import { statusCodesT } from "../types/statusCode.types"
 import { configContext } from "../../config/context/config.context"
 import { NetworkFeedbackI, UseHttpOptionsI } from "../types/network.types"
 
-export const useHttp = (options: UseHttpOptionsI = {
-    showSuccess: true,
-    showError: true,
-}) => {
+export const useHttp = (options: UseHttpOptionsI = {}) => {
  
     const { network, setNetwork, newGlobalFeedback } = useContext(networkContext)
     const { globalHttpFeedback } = useContext(configContext)

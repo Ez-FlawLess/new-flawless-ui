@@ -62,9 +62,9 @@ export const HttpFeedback = <T, >(props: HttpFeedbackPropsI<T>): ReactElement<an
         components?.alerts 
         &&
         (
-            (feedback.status === 'success' && props.showSuccess)
+            (feedback.status === 'success' && !props.hideSuccess)
             ||
-            (feedback.status === 'error' && props.showError)
+            (feedback.status === 'error' && !props.hideError) 
         )
     ) return components.alerts[feedback.status]({
         title: feedback.title,
@@ -75,9 +75,4 @@ export const HttpFeedback = <T, >(props: HttpFeedbackPropsI<T>): ReactElement<an
         statusCodeGroup: feedback.statusCodeGroup,
     })
     return null
-}
-
-HttpFeedback.defaultProps = {
-    showError: true,
-    showSuccess: true,
 }

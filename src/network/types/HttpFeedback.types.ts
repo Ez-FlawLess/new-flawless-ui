@@ -4,8 +4,8 @@ import { StatusCodeGroupT, statusCodesT } from "./statusCode.types";
 export interface HttpFeedbackPropsI<T> {
     url: string | number,
     baseUrl?: string,
-    showSuccess?: boolean,
-    showError?: boolean,
+    hideSuccess?: boolean,
+    hideError?: boolean,
     onError?: (data: any) => string | FeedbackI | void,
     onSuccess?: (data: any) => string | FeedbackI | void,
     alertProps?: T,
