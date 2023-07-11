@@ -21,6 +21,8 @@ export const GlobalHttpFeedback: FC<{
                 message: feedback.message,
                 onClose: () => handleClose(feedback.id),
                 props: {},
+                statusCode: feedback.statusCode,
+                statusCodeGroup: feedback.statusCodeGroup,
             }))}
         </>
     )

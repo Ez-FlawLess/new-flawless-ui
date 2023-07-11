@@ -34,6 +34,8 @@ export const Feedback = (
             message: feedback.message,
             onClose,
             props,
+            statusCode: feedback.statusCode,
+            statusCodeGroup: feedback.statusCodeGroup,
         })
         return null
     }

@@ -71,6 +71,8 @@ export const HttpFeedback = <T, >(props: HttpFeedbackPropsI<T>): ReactElement<an
         message: feedback.message,
         onClose: handleOnClose,
         props: props.alertProps,
+        statusCode: feedback.statusCode,
+        statusCodeGroup: feedback.statusCodeGroup,
     })
     return null
 }
