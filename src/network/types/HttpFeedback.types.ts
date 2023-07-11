@@ -1,4 +1,5 @@
 import { AlertsT } from "../../config/types/alert.types";
+import { StatusCodeGroupT, statusCodesT } from "./statusCode.types";
 
 export interface HttpFeedbackPropsI<T> {
     url: string | number,
@@ -16,10 +17,12 @@ export interface FeedbackI {
 }
 
 export interface UseFeedBackI {
-    status?: AlertsT,
+    status: AlertsT,
     title?: string,
     message: string,
     response?: any,
+    statusCodeGroup: StatusCodeGroupT,
+    statusCode: statusCodesT,
 }
 
 export interface GlobalFeedbacks extends UseFeedBackI {
