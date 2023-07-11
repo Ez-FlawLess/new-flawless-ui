@@ -4,7 +4,7 @@ import { AlertI } from "../../package";
 import React from "react";
 
 export const GlobalHttpFeedback: FC<{
-    children: (feedbacks: AlertI) => ReactElement,
+    children: (feedbacks: AlertI & { id: number }) => ReactElement,
 }> = props => {
 
     const { globalFeedbacks, setGlobalFeedbacks } = useContext(networkContext)
@@ -16,6 +16,7 @@ export const GlobalHttpFeedback: FC<{
     return (
         <>
             {globalFeedbacks.map(feedback => props.children({
+                id: feedback.id,
                 title: feedback.title,
                 message: feedback.message,
                 onClose: () => handleClose(feedback.id),

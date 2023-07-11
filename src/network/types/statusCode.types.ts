@@ -18,7 +18,7 @@ export interface StatusCodeMessageT<T = string> {
 }
 
 export interface StatusCodeMessagesI {
-    success?: StatusCodeMessageT,
+    success?: StatusCodeMessageT<(data: any) => string | void>,
     error?: StatusCodeMessageT<(data: any) => string | void>,
     1: StatusCodeMessageT<string | Record<InformationStatusCodeT, string>>,
     2: StatusCodeMessageT<string | Record<successfulStatusCodeT, string>>,
