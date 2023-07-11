@@ -1,16 +1,23 @@
 import { FC, useContext } from "react";
 import { configContext } from "../../config/context/config.context";
-import { HttpFeedbackPropsI, UseFeedBackI } from "../types/HttpFeedback.types";
+import { HttpFeedbackPropsI } from "../types/HttpFeedback.types";
+import { useFeedback } from "../hooks/useFeedback";
+import { NetworkFeedbackI } from "../types/network.types";
 
-export const Feedback: (
-    feedback: UseFeedBackI | null,
-    onClose: () => void,
+export const Feedback = (
+    network: NetworkFeedbackI | null | undefined, 
+    onClose: () => void, 
     options: Pick<HttpFeedbackPropsI<any>, 'onSuccess' | 'onError' | 'showSuccess' | 'showError'>,
-) => FC<any> = (feedback, onClose, options) => {
+): FC<any> => {
     
     const Test: FC<any> = (props) => {
 
-        const { components } = useContext(configContext)
+        const { components, statusCodeMessages } = useContext(configContext)
+
+        const feedback = useFeedback(network, statusCodeMessages, {
+            onSuccess: options.onSuccess,
+            onError: options.onError,
+        })
         
         if (
             feedback !== null 

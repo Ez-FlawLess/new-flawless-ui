@@ -5,10 +5,9 @@ import { StatusCodeMessagesI } from "../types/statusCode.types";
 import createFeedback from "../util/createFeedback";
 
 export const useFeedback = (
-    network: NetworkFeedbackI | null,
+    network: NetworkFeedbackI | null | undefined,
     statusCodeMessages: StatusCodeMessagesI | undefined,
     props: Pick<HttpFeedbackPropsI<any>, 'onSuccess' | 'onError'>,
-    onSet?: (feedback: UseFeedBackI) => void,
 ): UseFeedBackI | null => {
     const feedback = useMemo<UseFeedBackI | null>(() => {
         if (network && typeof network.success === 'boolean') {
@@ -20,7 +19,6 @@ export const useFeedback = (
         statusCodeMessages,
         props.onSuccess,
         props.onError,
-        onSet,
     ])
 
     return feedback

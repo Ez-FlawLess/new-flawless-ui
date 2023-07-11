@@ -6,6 +6,7 @@ import { NetworkI, networkContextI, SecondaryNetworksI, AxiosConfigT, AxiosInsta
 import { statusCodesT } from "../types/statusCode.types";
 import { extractUrl } from "../util/extractUrl";
 import { GlobalFeedbacks } from "../types/HttpFeedback.types";
+import createFeedback from "../util/createFeedback";
 
 export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances: AxiosConfigT[] = []): networkContextI => {
 
@@ -197,5 +198,25 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
 
     }, [secondaryAxiosInstances])
 
-    return {network, setNetwork, numberOfPendingRequests, secondaryNetworks, setSecondaryNetworks, globalFeedbacks, setGlobalFeedbacks}
+    const newGlobalFeedback: networkContextI['newGlobalFeedback'] = (id, network, options) => {
+        const feedback = createFeedback(network, config.statusCodeMessages, options)
+        if (feedback !== null) {
+            (feedback as GlobalFeedbacks).id = id
+            setGlobalFeedbacks(p => [
+                ...p.filter(f => f.id !== id),
+                (feedback as GlobalFeedbacks),
+            ])
+        }
+    }
+
+    return {
+        network, 
+        setNetwork, 
+        numberOfPendingRequests, 
+        secondaryNetworks, 
+        setSecondaryNetworks, 
+        globalFeedbacks, 
+        setGlobalFeedbacks, 
+        newGlobalFeedback,
+    }
 }

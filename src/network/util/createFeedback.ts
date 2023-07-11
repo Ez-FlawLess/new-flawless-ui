@@ -2,7 +2,7 @@ import { FeedbackI, HttpFeedbackPropsI, UseFeedBackI } from "../types/HttpFeedba
 import { NetworkFeedbackI } from "../types/network.types";
 import { StatusCodeGroupT, StatusCodeMessagesI } from "../types/statusCode.types";
 
-const createFeedback = (network: NetworkFeedbackI, statusCodeMessages: StatusCodeMessagesI | undefined,props: Pick<HttpFeedbackPropsI<any>, 'onSuccess' | 'onError'>): UseFeedBackI | null => {
+const createFeedback = (network: NetworkFeedbackI, statusCodeMessages: StatusCodeMessagesI | undefined, props: Pick<HttpFeedbackPropsI<any>, 'onSuccess' | 'onError'>): UseFeedBackI | null => {
     const response = network.response
     let title: UseFeedBackI['title'];
     let message: UseFeedBackI['message'] = '';
@@ -61,6 +61,8 @@ const createFeedback = (network: NetworkFeedbackI, statusCodeMessages: StatusCod
         response,
         title,
         message,
+        statusCode: network.statusCode,
+        statusCodeGroup,
     }
 }
 

@@ -9,4 +9,5 @@ export const networkContext = createContext<networkContextI>({
     setSecondaryNetworks: () => null,
     globalFeedbacks: [],
     setGlobalFeedbacks: () => null,
+    newGlobalFeedback: () => null,
 })
