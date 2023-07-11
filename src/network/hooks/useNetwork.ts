@@ -199,13 +199,15 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
     }, [secondaryAxiosInstances])
 
     const newGlobalFeedback: networkContextI['newGlobalFeedback'] = (id, network, options) => {
-        const feedback = createFeedback(network, config.statusCodeMessages, options)
-        if (feedback !== null) {
-            (feedback as GlobalFeedbacks).id = id
-            setGlobalFeedbacks(p => [
-                ...p.filter(f => f.id !== id),
-                (feedback as GlobalFeedbacks),
-            ])
+        if ((options.showSuccess && network.success) || (options.showError && !network.success)) {
+            const feedback = createFeedback(network, config.statusCodeMessages, options)
+            if (feedback !== null) {
+                (feedback as GlobalFeedbacks).id = id
+                setGlobalFeedbacks(p => [
+                    ...p.filter(f => f.id !== id),
+                    (feedback as GlobalFeedbacks),
+                ])
+            }
         }
     }
 
