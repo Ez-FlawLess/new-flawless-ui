@@ -26,6 +26,7 @@ export interface networkContextI  {
     network: NetworkI, 
     setNetwork: Dispatch<SetStateAction<NetworkI>>,
     numberOfPendingRequests: number,
+    setNumberOfPendingRequests: Dispatch<SetStateAction<number>>,
     secondaryNetworks: SecondaryNetworksI,
     setSecondaryNetworks: Dispatch<SetStateAction<SecondaryNetworksI>>,
     globalFeedbacks: GlobalFeedbacks[],

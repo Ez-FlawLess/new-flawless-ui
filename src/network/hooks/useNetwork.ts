@@ -215,6 +215,7 @@ export const useNetwork = (axiosInstance?: AxiosConfigT, secondaryAxiosInstances
         network, 
         setNetwork, 
         numberOfPendingRequests, 
+        setNumberOfPendingRequests,
         secondaryNetworks, 
         setSecondaryNetworks, 
         globalFeedbacks, 

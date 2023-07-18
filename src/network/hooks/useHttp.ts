@@ -8,7 +8,7 @@ import { NetworkFeedbackI, UseHttpOptionsI } from "../types/network.types"
 
 export const useHttp = (options: UseHttpOptionsI = {}) => {
  
-    const { network, setNetwork, newGlobalFeedback } = useContext(networkContext)
+    const { network, setNetwork, newGlobalFeedback, setNumberOfPendingRequests } = useContext(networkContext)
     const { globalHttpFeedback } = useContext(configContext)
 
     const reactId = useId()
@@ -41,6 +41,7 @@ export const useHttp = (options: UseHttpOptionsI = {}) => {
             ...prev,
             [id]: true,
         }))
+        setNumberOfPendingRequests(p => p + 1)
         try {
             const response = await c
 
@@ -52,6 +53,7 @@ export const useHttp = (options: UseHttpOptionsI = {}) => {
                     response: response.data,
                 },
             }))
+            setNumberOfPendingRequests(p => p - 1)
             if (globalHttpFeedback) {
                 newGlobalFeedback(id, {
                     success: true,
@@ -61,6 +63,7 @@ export const useHttp = (options: UseHttpOptionsI = {}) => {
             }
             return response
         } catch (error: any) {
+            setNumberOfPendingRequests(p => p - 1)
             setNetwork(prev => ({
                 ...prev,
                 [id]: {
