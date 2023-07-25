@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios"
-import { useCallback, useContext, useId, useMemo } from "react"
+import { useCallback, useContext, useEffect, useId, useMemo } from "react"
 import { Feedback } from "../components/Feedback"
 import { networkContext } from "../context/networkContext"
 import { statusCodesT } from "../types/statusCode.types"
@@ -35,6 +35,18 @@ export const useHttp = (options: UseHttpOptionsI = {}) => {
     //     network[id],
     //     id,
     // ])
+
+    useEffect(() => {
+        if (!options.keep) {
+            return () => {
+                setNetwork(p => {
+                    const h = {...p}
+                    delete h[id]
+                    return h
+                })
+            }
+        }
+    }, [options.keep])
 
     const call = useCallback(async <T extends AxiosResponse>(c: Promise<T>) => {
         setNetwork(prev => ({
@@ -79,15 +91,16 @@ export const useHttp = (options: UseHttpOptionsI = {}) => {
                     response: error.response.data,
                 },options)
             }
-            throw new Error(error)
+            throw error
         }
     }, [id])
 
     const handleFeedbackClose = () => {
-        setNetwork(prev => ({
-            ...prev,
-            [id]: false,
-        }))
+        setNetwork(p => {
+            const h = {...p}
+            delete h[id]
+            return h
+        })
     }
 
     return {

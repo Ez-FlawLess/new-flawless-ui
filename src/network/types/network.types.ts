@@ -46,4 +46,5 @@ export interface AxiosInstanceI {
 
 export interface UseHttpOptionsI extends Omit<HttpFeedbackPropsI<any>, 'url' | 'baseUrl' | 'alertProps'> {
     id?: number,
+    keep?: boolean,
 }
